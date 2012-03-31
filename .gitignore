@@ -1,0 +1,11 @@
+*~
+*.swp
+*.yml
+.bundle
+log/
+tmp/
+doc/*
+.yardoc
+db/schema.rb
+.rvmrc
+scratch

@@ -1,11 +1,25 @@
 source 'http://rubygems.org'
 
-gem 'rails', '3.1.0'
-
-# Bundle edge Rails instead:
-# gem 'rails',     :git => 'git://github.com/rails/rails.git'
-
-gem 'sqlite3'
+gem 'rails'
+gem 'mysql2'
+gem 'mysql'
+gem 'mechanize'
+gem 'fastercsv'
+gem 'rake'
+gem 'configliere'
+gem 'httparty'
+gem 'nokogiri'
+gem 'redis'
+gem 'redis-objects'
+gem 'mechanize'
+gem 'capistrano'
+gem 'capistrano-ext'
+gem 'net-ssh'
+gem 'net-sftp'
+gem 'sanitize'
+gem 'mongoid'
+gem "bson_ext"
+gem 'htmlentities'
 
 
 # Gems used only for assets and not required
