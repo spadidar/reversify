@@ -7,7 +7,7 @@ module Stealer
   class Scraper
     
     def initialize *args
-      @free_dic = "http://ninjawords.com/"
+      @free_dic = "http://www.dict.org/bin/Dict"
       @agent = Mechanize.new
       @page = @agent.get @free_dic
     end
@@ -18,20 +18,19 @@ module Stealer
         puts "batch: " + count.to_s
         batch.each do |word|
           scrape word
-          sleep 1
+          sleep 0.5
         end
         count += 1000
       end
     end
 
     def scrape word
-      # url = File.join(@free_dic, word.word)
-      form = @page.form_with(:name => "q")
-      form["value"] = word
-      page = form.submit(form.button_with(:name => "submit"))
+      form = @page.form_with :name => "DICT"
+      form.field_with(:name => "Query").value = word.word
+      page = form.submit
       begin
-        # page = open(url).read
-        # found = page.scan /1\.\s/
+        found = page.body.scan /1\.\s/
+        page = page.body
         if found.length >= 1
           Translation.new(:word_id => word.id, :word => word.word, :html => page).save
           word.status = "found"
@@ -41,9 +40,10 @@ module Stealer
           word.status = "not_found"
           word.save
         end
-      rescue OpenURI::HTTPError
+      rescue Exception => e
         Translation.new(:word_id => word.id, :word => word.word, :html => page).save
-        word.status = "failed"
+        word.status = "exception"
+        word.code = e.message.to_s + "\n\n" + e.backtrace.to_s
         word.save
       end
       # html_doc = Nokogiri::HTML(page)
