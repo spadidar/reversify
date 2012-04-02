@@ -14,7 +14,7 @@ module Stealer
     
     def run 
       count = 1000
-      Words.find_in_batches(:batch_size => 1000) do |batch|
+      Words.find_in_batches(:batch_size => 1000, :conditions => ["id > 13099"]) do |batch|
         puts "batch: " + count.to_s
         batch.each do |word|
           scrape word
@@ -41,7 +41,8 @@ module Stealer
           word.save
         end
       rescue Exception => e
-        Translation.new(:word_id => word.id, :word => word.word, :html => page).save
+        # Translation.new(:word_id => word.id, :word => word.word, :html => page).save
+        File.open("/home/sasan/external/words/" + word.word, 'w') {|f| f.write(page) }
         word.status = "exception"
         word.code = e.message.to_s + "\n\n" + e.backtrace.to_s
         word.save
